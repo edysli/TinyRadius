@@ -1,7 +1,7 @@
 /**
  * $Id: AccessRequest.java,v 1.5 2010/03/03 09:27:07 wuttke Exp $
  * Created on 08.04.2005
- * 
+ *
  * @author Matthias Wuttke
  * @version $Revision: 1.5 $
  */
@@ -43,7 +43,7 @@ public class AccessRequest extends RadiusPacket {
 	 * Constructs an Access-Request packet, sets the
 	 * code, identifier and adds an User-Name and an
 	 * User-Password attribute (PAP).
-	 * 
+	 *
 	 * @param userName
 	 *            user name
 	 * @param userPassword
@@ -57,7 +57,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Sets the User-Name attribute of this Access-Request.
-	 * 
+	 *
 	 * @param userName
 	 *            user name to set
 	 */
@@ -73,7 +73,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Sets the plain-text user password.
-	 * 
+	 *
 	 * @param userPassword
 	 *            user password to set
 	 */
@@ -86,7 +86,7 @@ public class AccessRequest extends RadiusPacket {
 	/**
 	 * Retrieves the plain-text user password.
 	 * Returns null for CHAP - use verifyPassword().
-	 * 
+	 *
 	 * @see #verifyPassword(String)
 	 * @return user password
 	 */
@@ -96,7 +96,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Retrieves the user name from the User-Name attribute.
-	 * 
+	 *
 	 * @return user name
 	 */
 	public String getUserName() {
@@ -110,7 +110,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Returns the protocol used for encrypting the passphrase.
-	 * 
+	 *
 	 * @return AUTH_PAP or AUTH_CHAP
 	 */
 	public String getAuthProtocol() {
@@ -120,7 +120,7 @@ public class AccessRequest extends RadiusPacket {
 	/**
 	 * Selects the protocol to use for encrypting the passphrase when
 	 * encoding this Radius packet.
-	 * 
+	 *
 	 * @param authProtocol
 	 *            AUTH_PAP or AUTH_CHAP
 	 */
@@ -135,7 +135,7 @@ public class AccessRequest extends RadiusPacket {
 	 * Verifies that the passed plain-text password matches the password
 	 * (hash) send with this Access-Request packet. Works with both PAP
 	 * and CHAP.
-	 * 
+	 *
 	 * @param plaintext
 	 * @return true if the password is valid, false otherwise
 	 */
@@ -149,7 +149,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Decrypts the User-Password attribute.
-	 * 
+	 *
 	 * @see org.tinyradius.packet.RadiusPacket#decodeRequestAttributes(java.lang.String)
 	 */
 	protected void decodeRequestAttributes(String sharedSecret) throws RadiusException {
@@ -181,7 +181,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Sets and encrypts the User-Password attribute.
-	 * 
+	 *
 	 * @see org.tinyradius.packet.RadiusPacket#encodeRequestAttributes(java.lang.String)
 	 */
 	protected void encodeRequestAttributes(String sharedSecret) {
@@ -207,7 +207,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * This method encodes the plaintext user password according to RFC 2865.
-	 * 
+	 *
 	 * @param userPass
 	 *            the password to encrypt
 	 * @param sharedSecret
@@ -261,11 +261,11 @@ public class AccessRequest extends RadiusPacket {
 			md5.update(i == 0 ? getAuthenticator() : lastBlock);
 			byte bn[] = md5.digest();
 
-			System.arraycopy(encryptedPass, i, lastBlock, 0, 16);
-
 			// perform the XOR as specified by RFC 2865.
 			for (int j = 0; j < 16; j++)
 				encryptedPass[i + j] = (byte) (bn[j] ^ encryptedPass[i + j]);
+
+			System.arraycopy(encryptedPass, i, lastBlock, 0, 16);
 		}
 
 		return encryptedPass;
@@ -273,7 +273,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Decodes the passed encrypted password and returns the clear-text form.
-	 * 
+	 *
 	 * @param encryptedPass
 	 *            encrypted password
 	 * @param sharedSecret
@@ -317,7 +317,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Creates a random CHAP challenge using a secure random algorithm.
-	 * 
+	 *
 	 * @return 16 byte CHAP challenge
 	 */
 	private byte[] createChapChallenge() {
@@ -328,7 +328,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Encodes a plain-text password using the given CHAP challenge.
-	 * 
+	 *
 	 * @param plaintext
 	 *            plain-text password
 	 * @param chapChallenge
@@ -353,7 +353,7 @@ public class AccessRequest extends RadiusPacket {
 
 	/**
 	 * Verifies a CHAP password against the given plaintext password.
-	 * 
+	 *
 	 * @return plain-text password
 	 */
 	private boolean verifyChapPassword(String plaintext) throws RadiusException {
